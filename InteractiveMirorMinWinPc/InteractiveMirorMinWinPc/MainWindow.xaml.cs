@@ -22,6 +22,7 @@ namespace InteractiveMirorMinWinPc
     public partial class MainWindow : Window
     {
         // ATTRIBUTS
+
         // DispatcherTimer setup
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
@@ -44,6 +45,15 @@ namespace InteractiveMirorMinWinPc
             textBlockTime.Text = DateTime.Now.ToString();
             // Forcing the CommandManager to raise the RequerySuggested event
             CommandManager.InvalidateRequerySuggested();
+        }
+
+        // DISPLAY BUTTON STATE
+        private async void button_Click(object sender, RoutedEventArgs e)
+        {
+            // physical button pressed
+            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
+            await Task.Delay(500);
+            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
         }
     }
 }
