@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InteractiveMirorMinWinPc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="720" Width="1280">
     <Grid>
-        
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="208" Margin="147,66,0,0" Stroke="Black" VerticalAlignment="Top" Width="713" StrokeThickness="2"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="208" Margin="147,333,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="713"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="208" Margin="147,595,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="713"/>
+        <CheckBox x:Name="checkBoxStatePhysicalButton" Content="" HorizontalAlignment="Left" Margin="382,119,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="188,373,0,0" TextWrapping="Wrap" Text="Emotion :" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="188,124,0,0" TextWrapping="Wrap" Text="Etat du bouton physique :" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlockEmotionApi" HorizontalAlignment="Left" Margin="188,441,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="100" Width="662"/>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="188,639,0,0" TextWrapping="Wrap" Text="Meteo :" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlockMeteoApi" HorizontalAlignment="Left" Margin="188,684,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="104" Width="662"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="208" Margin="939,66,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="714"/>
+        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="984,124,0,0" TextWrapping="Wrap" Text="Time :" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlockTime" HorizontalAlignment="Left" Margin="984,167,0,0" TextWrapping="Wrap" Text="00h00" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlockInitWebcam" HorizontalAlignment="Left" Margin="188,398,0,0" TextWrapping="Wrap" Text="Webcam non initialisée." VerticalAlignment="Top" Height="43" Width="648"/>
+
+
+
+        <Canvas Name="PhotoCanvas" Width="320" Height="320" Background="Gray"  Margin="888,339,712,421" Visibility="Visible">
+            <Image x:Name="captureImage" Width="320" Height="320" Visibility="Visible" Canvas.Left="110" Canvas.Top="-10"/>
+        </Canvas>
     </Grid>
 </Window>
