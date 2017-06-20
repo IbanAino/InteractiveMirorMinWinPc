@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
+
+
 namespace InteractiveMirorMinWinPc
 {
     /// <summary>
@@ -26,6 +28,8 @@ namespace InteractiveMirorMinWinPc
         // DispatcherTimer setup
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
+        Webcam webcam = new Webcam();
+
         // CONSTRUCTOR
         public MainWindow()
         {
@@ -34,8 +38,7 @@ namespace InteractiveMirorMinWinPc
             // display the date and the time every second
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
-
+            dispatcherTimer.Start();            
         }
 
         // DISPLAY THE TIME AND THE DATE
@@ -51,6 +54,9 @@ namespace InteractiveMirorMinWinPc
         private async void button_Click(object sender, RoutedEventArgs e)
         {
             // physical button pressed
+            bool a = webcam.DetectFace();
+            //string a = webcam.TakePicture();
+
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
             await Task.Delay(500);
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
