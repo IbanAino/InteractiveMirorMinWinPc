@@ -56,7 +56,7 @@ namespace InteractiveMirorMinWinPc
             
             // physical button pressed
             bool a = webcam.DetectFace();
-            //string a = webcam.TakePicture();
+            string b = webcam.TakePicture();
             /*
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
             await Task.Delay(500);

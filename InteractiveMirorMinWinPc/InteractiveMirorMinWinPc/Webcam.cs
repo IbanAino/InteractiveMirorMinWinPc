@@ -10,6 +10,12 @@ using Emgu.CV.UI;
 #if !(__IOS__ || NETFX_CORE)
 using Emgu.CV.Cuda;
 #endif
+
+using System.Drawing.Imaging;
+using System.IO;
+
+
+
 //using FaceDetection;
 
 namespace InteractiveMirorMinWinPc
@@ -17,19 +23,63 @@ namespace InteractiveMirorMinWinPc
     class Webcam
     {
         ImageViewer viewer = new ImageViewer(); //create an image viewer
- 
+
+        // for the camera capture
+        private VideoCapture _capture = null;
+        private bool _captureInProgress;
+        private Mat _frame;
+        private Mat _grayFrame;
+        private Mat _smallGrayFrame;
+        private Mat _smoothedGrayFrame;
+        private Mat _cannyFrame;
+
 
         public Webcam()
         {
 
         }
-        
+ 
+        //-------------------------------------take picture-----------------       
         public string TakePicture()
         {
+            
+            _capture = new VideoCapture();
+            /*
+            //_capture.ImageGrabbed += ProcessFrame;
+            viewer.Image = _capture.QueryFrame();
+            Image.toBitmap().Save("filename.png");
+            */
+            Image<Bgr, Byte> image = _capture.QueryFrame().ToImage<Bgr, Byte>();
 
+            image.ToBitmap().Save("filename.png");
 
             return "Charlotte";
         }
+
+        /*
+        private void ProcessFrame(object sender, EventArgs arg)
+        {
+            if (_capture != null && _capture.Ptr != IntPtr.Zero)
+            {
+                _capture.Retrieve(_frame, 0);
+
+                CvInvoke.CvtColor(_frame, _grayFrame, ColorConversion.Bgr2Gray);
+
+                CvInvoke.PyrDown(_grayFrame, _smallGrayFrame);
+
+                CvInvoke.PyrUp(_smallGrayFrame, _smoothedGrayFrame);
+
+                CvInvoke.Canny(_smoothedGrayFrame, _cannyFrame, 100, 60);
+
+                captureImageBox.Image = _frame;
+                grayscaleImageBox.Image = _grayFrame;
+                smoothedGrayscaleImageBox.Image = _smoothedGrayFrame;
+                cannyImageBox.Image = _cannyFrame;
+            }
+        }
+        */
+        //---------------------------------end take picture---------------------------------
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -120,8 +170,7 @@ namespace InteractiveMirorMinWinPc
                     }
                 }
                 detectionTime = watch.ElapsedMilliseconds;
-            }
-            
+            }            
             return functionResponse;
         }
     }
