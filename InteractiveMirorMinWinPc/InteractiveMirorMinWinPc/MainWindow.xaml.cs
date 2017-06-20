@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,10 +55,13 @@ namespace InteractiveMirorMinWinPc
         // DISPLAY BUTTON STATE
         private async void button_Click(object sender, RoutedEventArgs e)
         {
+            System.Drawing.Image image;
             
             // physical button pressed
-            bool a = webcam.DetectFace();
-            string b = webcam.TakePicture();
+            
+            image = webcam.TakePicture();
+
+            bool a = webcam.DetectFace(image);
             /*
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
             await Task.Delay(500);

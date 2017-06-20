@@ -26,59 +26,26 @@ namespace InteractiveMirorMinWinPc
 
         // for the camera capture
         private VideoCapture _capture = null;
-        private bool _captureInProgress;
-        private Mat _frame;
-        private Mat _grayFrame;
-        private Mat _smallGrayFrame;
-        private Mat _smoothedGrayFrame;
-        private Mat _cannyFrame;
 
 
         public Webcam()
         {
 
         }
- 
-        //-------------------------------------take picture-----------------       
-        public string TakePicture()
+   
+        public Image TakePicture()
         {
             
             _capture = new VideoCapture();
-            /*
-            //_capture.ImageGrabbed += ProcessFrame;
-            viewer.Image = _capture.QueryFrame();
-            Image.toBitmap().Save("filename.png");
-            */
+
             Image<Bgr, Byte> image = _capture.QueryFrame().ToImage<Bgr, Byte>();
 
-            image.ToBitmap().Save("filename.png");
+            //image.ToBitmap().Save("filename.png");
 
-            return "Charlotte";
+            _capture.Dispose();
+
+            return image.ToBitmap();
         }
-
-        /*
-        private void ProcessFrame(object sender, EventArgs arg)
-        {
-            if (_capture != null && _capture.Ptr != IntPtr.Zero)
-            {
-                _capture.Retrieve(_frame, 0);
-
-                CvInvoke.CvtColor(_frame, _grayFrame, ColorConversion.Bgr2Gray);
-
-                CvInvoke.PyrDown(_grayFrame, _smallGrayFrame);
-
-                CvInvoke.PyrUp(_smallGrayFrame, _smoothedGrayFrame);
-
-                CvInvoke.Canny(_smoothedGrayFrame, _cannyFrame, 100, 60);
-
-                captureImageBox.Image = _frame;
-                grayscaleImageBox.Image = _grayFrame;
-                smoothedGrayscaleImageBox.Image = _smoothedGrayFrame;
-                cannyImageBox.Image = _cannyFrame;
-            }
-        }
-        */
-        //---------------------------------end take picture---------------------------------
 
 
         private void button1_Click(object sender, EventArgs e)
@@ -86,18 +53,20 @@ namespace InteractiveMirorMinWinPc
 
         }
 
-        public bool DetectFace()
+        public bool DetectFace(Image image2)
         {
-            Debug.Print("function TakePicture called");
+            image2.Save("filename.png");
 
             bool functionResponse = false;
             long detectionTime;
 
-            IImage image;
-            //Read the files as an 8-bit Bgr image  
+            //IImage image;
 
+            //image = new UMat("lena.jpg", ImreadModes.Color); //UMat version
 
-            image = new UMat("lena.jpg", ImreadModes.Color); //UMat version
+            //image = image2;
+            Bitmap bmpImage = new Bitmap(image2);
+            Emgu.CV.IImage image= new Emgu.CV.Image<Bgr, Byte>(bmpImage);
 
             //image = new UMat("landscape.jpg", ImreadModes.Color); //UMat version
 
