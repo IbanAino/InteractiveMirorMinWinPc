@@ -53,13 +53,16 @@ namespace InteractiveMirorMinWinPc
         // DISPLAY BUTTON STATE
         private async void button_Click(object sender, RoutedEventArgs e)
         {
+            
             // physical button pressed
             bool a = webcam.DetectFace();
             //string a = webcam.TakePicture();
-
+            /*
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
             await Task.Delay(500);
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
+            */
+            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, a);
         }
     }
 }

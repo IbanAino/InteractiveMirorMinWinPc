@@ -38,8 +38,10 @@ namespace InteractiveMirorMinWinPc
 
         public bool DetectFace()
         {
-            bool functionResponse = false;
+            Debug.Print("function TakePicture called");
 
+            bool functionResponse = false;
+            long detectionTime;
 
             IImage image;
             //Read the files as an 8-bit Bgr image  
@@ -47,8 +49,7 @@ namespace InteractiveMirorMinWinPc
 
             image = new UMat("lena.jpg", ImreadModes.Color); //UMat version
 
-            //image = new Mat("lena.jpg", ImreadModes.Color); //CPU version
-
+            //image = new UMat("landscape.jpg", ImreadModes.Color); //UMat version
 
             String faceFileName = "haarcascade_frontalface_default.xml";
             List<Rectangle> faces = new List<Rectangle>();
@@ -57,6 +58,7 @@ namespace InteractiveMirorMinWinPc
 
             using (InputArray iaImage = image.GetInputArray())
             {
+                Debug.Print("InputArray iaImage called");
 #if !(__IOS__ || NETFX_CORE)
                 if (iaImage.Kind == InputArray.Type.CudaGpuMat && CudaInvoke.HasCuda)
                 {
@@ -73,6 +75,7 @@ namespace InteractiveMirorMinWinPc
                             face.DetectMultiScale(gpuGray, region);
                             Rectangle[] faceRegion = face.Convert(region);
                             faces.AddRange(faceRegion);
+
                             if (faces[0] != null)
                             {
                                 functionResponse = true;
@@ -83,9 +86,40 @@ namespace InteractiveMirorMinWinPc
                 else
 #endif
                 {
+                    Debug.Print("else called");
+                    using (CascadeClassifier face = new CascadeClassifier(faceFileName))
+                    {
+                        watch = Stopwatch.StartNew();
 
+                        using (UMat ugray = new UMat())
+                        {
+                            CvInvoke.CvtColor(image, ugray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+
+                            //normalizes brightness and increases contrast of the image
+                            CvInvoke.EqualizeHist(ugray, ugray);
+
+                            //Detect the faces  from the gray scale image and store the locations as rectangle
+                            //The first dimensional is the channel
+                            //The second dimension is the index of the rectangle in the specific channel                     
+                            Rectangle[] facesDetected = face.DetectMultiScale(
+                               ugray,
+                               1.1,
+                               10,
+                               new Size(20, 20));
+
+                            faces.AddRange(facesDetected);
+
+                            int facesCount = facesDetected.Length;
+
+                            if (facesCount != 0)
+                            {
+                                functionResponse = true;
+                            }
+                        }
+                        watch.Stop();
+                    }
                 }
-
+                detectionTime = watch.ElapsedMilliseconds;
             }
             
             return functionResponse;
