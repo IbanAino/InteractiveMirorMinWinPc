@@ -30,8 +30,10 @@ namespace InteractiveMirorMinWinPc
         // DispatcherTimer setup
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
+        // instanciations of classes
         Webcam webcam = new Webcam();
         EmotionApi emotionApi = new EmotionApi();
+        FacesDetection faceDetection = new FacesDetection();
 
         // CONSTRUCTOR
         public MainWindow()
@@ -58,21 +60,51 @@ namespace InteractiveMirorMinWinPc
         {
             System.Drawing.Image image;
             
-            // physical button pressed
-            
+            // take a picture
             image = webcam.TakePicture();
 
-            bool a = webcam.DetectFace(image);
-            /*
-            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
-            await Task.Delay(500);
-            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
-            */
-            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, a);
+            // look for a face in the picture
+            bool aFaceIsDetected = faceDetection.DetectFace(image);
 
-            string response = await emotionApi.MakeRequestBitmap2(image);
+            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, aFaceIsDetected);
 
-            textBlockEmotionApi.Text = response;
+            // if there is a face in the picture, analyse the face
+            if (aFaceIsDetected)
+            {
+                string response = await emotionApi.MakeRequestBitmap2(image);
+                textBlockEmotionApi.Text = response;
+            }
+            else
+            {
+                textBlockEmotionApi.Text = "openCV hasn't detected any face";
+            }
+        }
+
+        private async void button1_Click(object sender, RoutedEventArgs e)
+        {
+            while (true)
+            {
+                System.Drawing.Image image;
+
+                // take a picture
+                image = webcam.TakePicture();
+
+                // look for a face in the picture
+                bool aFaceIsDetected = faceDetection.DetectFace(image);
+
+                checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, aFaceIsDetected);
+
+                // if there is a face in the picture, analyse the face
+                if (aFaceIsDetected)
+                {
+                    string response = await emotionApi.MakeRequestBitmap2(image);
+                    textBlockEmotionApi.Text = response;
+                }
+                else
+                {
+                    textBlockEmotionApi.Text = "openCV hasn't detected any face";
+                }
+            }
         }
     }
 }

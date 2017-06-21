@@ -46,9 +46,18 @@ namespace InteractiveMirorMinWinPc
             emotionResult = await emotionServiceClient.RecognizeAsync(stream2);
 
             // read the response
-            Microsoft.ProjectOxford.Common.Contract.EmotionScores scores = emotionResult[0].Scores;
+            Microsoft.ProjectOxford.Common.Contract.EmotionScores scores;
+            try
+            {
+                scores = emotionResult[0].Scores;
+            }
+            catch
+            {
+                return "Microsoft Emotion Api has no detected any emotion 01";
+            }
 
-            string response = "no emotion";
+
+            string response = "Microsoft Emotion Api has no detected any emotion 02";
 
             if(emotionResult != null){
                 response =

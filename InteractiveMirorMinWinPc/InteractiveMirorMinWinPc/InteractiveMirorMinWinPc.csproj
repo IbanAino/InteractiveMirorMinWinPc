@@ -88,6 +88,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EmotionApi.cs" />
+    <Compile Include="FacesDetection.cs" />
     <Compile Include="Webcam.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

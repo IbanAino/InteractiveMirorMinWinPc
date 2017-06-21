@@ -27,5 +27,7 @@
             <Image x:Name="captureImage" Width="320" Height="320" Visibility="Visible" Canvas.Left="110" Canvas.Top="-10"/>
         </Canvas>
         <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="276,193,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <Button x:Name="button1" Content="infinite loop button
+                " HorizontalAlignment="Left" Margin="664,225,0,0" VerticalAlignment="Top" Width="145" Height="24" Click="button1_Click"/>
     </Grid>
 </Window>
