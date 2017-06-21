@@ -31,6 +31,7 @@ namespace InteractiveMirorMinWinPc
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
 
         Webcam webcam = new Webcam();
+        EmotionApi emotionApi = new EmotionApi();
 
         // CONSTRUCTOR
         public MainWindow()
@@ -68,6 +69,10 @@ namespace InteractiveMirorMinWinPc
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
             */
             checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, a);
+
+            string response = await emotionApi.MakeRequestBitmap2(image);
+
+            textBlockEmotionApi.Text = response;
         }
     }
 }

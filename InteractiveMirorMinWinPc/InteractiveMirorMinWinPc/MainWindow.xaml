@@ -13,7 +13,7 @@
         <CheckBox x:Name="checkBoxStateButton" Content="" HorizontalAlignment="Left" Margin="382,119,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="188,373,0,0" TextWrapping="Wrap" Text="Emotion :" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="188,124,0,0" TextWrapping="Wrap" Text="Etat du bouton physique :" VerticalAlignment="Top"/>
-        <TextBlock x:Name="textBlockEmotionApi" HorizontalAlignment="Left" Margin="188,441,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="100" Width="662"/>
+        <TextBlock x:Name="textBlockEmotionApi" HorizontalAlignment="Left" Margin="188,441,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="176" Width="662"/>
         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="188,639,0,0" TextWrapping="Wrap" Text="Meteo :" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlockMeteoApi" HorizontalAlignment="Left" Margin="188,684,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="104" Width="662"/>
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="208" Margin="939,66,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="714"/>
