@@ -32,7 +32,7 @@ namespace InteractiveMirorMinWinPc
         }
 
 
-        public async Task<string> MakeRequestBitmap2(Image image)
+        public async Task<float[]> MakeRequestBitmap2(Image image)
         {
 
             //FileStream stream3 = new FileStream("portrait.jpeg", FileMode.Open, FileAccess.Read);
@@ -44,7 +44,7 @@ namespace InteractiveMirorMinWinPc
                 image.Save(stream2, ImageFormat.Png);
                 stream2.Position = 0;
             }catch{
-                return "picture not converted into a stream";
+                return new float[] { 1 };
             }
 
 
@@ -52,7 +52,8 @@ namespace InteractiveMirorMinWinPc
             try{
                 emotionResult = await emotionServiceClient.RecognizeAsync(stream2);
             }catch{
-                return "error asking emotion Api";
+                //return "error asking emotion Api";
+                return new float[] { 2 };
             }
 
 
@@ -66,13 +67,15 @@ namespace InteractiveMirorMinWinPc
             }
             catch
             {
-                return "Microsoft Emotion Api has no detected any emotion 01";
+                //return "Microsoft Emotion Api has no detected any emotion 01";
+                return new float[] { 3 };
             }
 
 
             string response = "Microsoft Emotion Api has no detected any emotion 02";
+            float[] response2 = null;
 
-            if(emotionResult != null){
+            if (emotionResult != null){
                 response =
                     "Happiness : " + scores.Happiness + "\n" +
                     "Sadness : " + scores.Sadness + "\n" +
@@ -83,10 +86,18 @@ namespace InteractiveMirorMinWinPc
                     "Disgust : " + scores.Disgust + "\n" +
                     "Neutral : " + scores.Neutral;
 
-                float[] response2 = new float[] { float.Parse(scores.Happiness.ToString()), float.Parse(scores.Sadness.ToString()) };
+                response2 = new float[] {
+                    float.Parse(scores.Happiness.ToString()),
+                    float.Parse(scores.Sadness.ToString()),
+                    float.Parse(scores.Surprise.ToString()),
+                    float.Parse(scores.Fear.ToString()),
+                    float.Parse(scores.Anger.ToString()),
+                    float.Parse(scores.Contempt.ToString()),
+                    float.Parse(scores.Disgust.ToString()),
+                    float.Parse(scores.Neutral.ToString())};
             }
 
-            return response;  
+            return response2;  
         }
     }
 }

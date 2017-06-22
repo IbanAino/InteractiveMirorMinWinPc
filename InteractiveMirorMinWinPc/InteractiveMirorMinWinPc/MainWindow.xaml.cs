@@ -62,95 +62,6 @@ namespace InteractiveMirorMinWinPc
         }
 
         // DISPLAY BUTTON STATE
-        private async void button_Click(object sender, RoutedEventArgs e)
-        {
-            checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
-            //Task.Delay(1000).Wait();
-            //checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, false);
-
-            System.Drawing.Image image;
-            
-            // take a picture
-            image = webcam.TakePicture();
-
-            // look for a face in the picture
-            bool aFaceIsDetected = faceDetection.DetectFace(image);
-
-            //checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, aFaceIsDetected);
-
-            // if there is a face in the picture, analyse the face
-            if (aFaceIsDetected)
-            {
-                string response = await emotionApi.MakeRequestBitmap2(image);
-                textBlockEmotionApi.Text = "microsoft says :\n";
-                textBlockEmotionApi.Text += response;
-            }
-            else
-            {
-                textBlockEmotionApi.Text = "openCV hasn't detected any face";
-            }
-        }
-
-        private async void button1_Click(object sender, RoutedEventArgs e)
-        {
-            bool nextLoop = true;
-
-            while (nextLoop)
-            {
-                count++;
-                //nextLoop = false;
-                textBlockEmotionApi.Text += "\n \n loop begining, loop number " + count.ToString() + "\n";
-
-                checkBoxStateButton.SetValue(CheckBox.IsCheckedProperty, true);
-
-                //System.Drawing.Image image;
-
-
-
-                // take a picture
-                textBlockEmotionApi.Text += "1 - picture soonly taken \n";
-
-                Task<System.Drawing.Image> task2 = Task.Run(new Func<System.Drawing.Image>(webcam.TakePicture));
-                image = task2.Result;
-                
-                Debug.Print("1 - picture taken");
-                textBlockEmotionApi.Text += "1 - picture taken \n";
-
-
-                
-                // look for a face in the picture
-                textBlockEmotionApi.Text += "2 - picture soonly analyzed \n";
-
-                Task <bool> task3 = Task<bool>.Factory.StartNew(() =>
-                {
-                    bool x = faceDetection.DetectFace(image);
-                    return x;
-                });
-                bool aFaceIsDetected = task3.Result;
-                Debug.Print("2 - picture analyzed");
-
-                textBlockEmotionApi.Text += "2 - picture analyzed \n";
-                
-                //bool aFaceIsDetected = true;
-
-
-                // if there is a face in the picture, analyse the face
-                textBlockEmotionApi.Text += "3 - picture soonly submitted (or not) \n";
-                if (aFaceIsDetected)
-                {
-                    string response = await emotionApi.MakeRequestBitmap2(image);
-                    textBlockEmotionApi.Text = response;
-                    Debug.Print("3.1 - emotion Api called");
-                    textBlockEmotionApi.Text += "\n 3.1 - API Emotion called \n";
-                }
-                else
-                {
-                    textBlockEmotionApi.Text = "openCV hasn't detected any face";
-                    Debug.Print("3.2 - picture no analyzed - no face detected");
-                }
-                //Task.Delay(500).Wait();
-            }
-        }
 
         private async void button2_Click(object sender, RoutedEventArgs e)
         {
@@ -167,8 +78,32 @@ namespace InteractiveMirorMinWinPc
 
                 if (aFaceIsDetected)
                 {
-                    string response = await Task.Run(() => emotionApi.MakeRequestBitmap2(image));
-                    textBlockEmotionApi.Text = response;
+                    float[] response = await Task.Run(() => emotionApi.MakeRequestBitmap2(image));
+
+                    if(response.Length > 1){
+                        textBlockEmotionApi.Text =
+                            "Happiness : " + response[0].ToString() + "\n" +
+                            "Sadness : " + response[1].ToString() + "\n" +
+                            "Surprise : " + response[2].ToString() + "\n" +
+                            "Fear : " + response[3].ToString() + "\n" +
+                            "Anger : " + response[4].ToString() + "\n" +
+                            "Comtempt : " + response[5].ToString() + "\n" +
+                            "Disgust : " + response[6].ToString() + "\n" +
+                            "Neutral : " + response[7].ToString();
+
+                        happiness.Width = response[0] * 100;
+                        sadness.Width = response[1] * 100;
+                        surprise.Width = response[2] * 100;
+                        fear.Width = response[3] * 100;
+                        anger.Width = response[4] * 100;
+                        contempt.Width = response[5] * 100;
+                        disgust.Width = response[6] * 100;
+                        neutral.Width = response[7] * 100;
+                    }
+                    else
+                    {
+                        textBlockEmotionApi.Text = "ERROR n°" + response[0];
+                    }
                 }
                 else
                 {
