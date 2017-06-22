@@ -12,7 +12,8 @@ using Emgu.CV.UI;
 using System.Drawing.Imaging;
 using System.IO;
 
-
+using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
 //using FaceDetection;
 
@@ -25,6 +26,9 @@ namespace InteractiveMirorMinWinPc
         // for the camera capture
         private VideoCapture _capture = null;
 
+        // 2
+
+
 
         public Webcam()
         {
@@ -35,14 +39,18 @@ namespace InteractiveMirorMinWinPc
         {
             
             _capture = new VideoCapture();
+            //_capture.SetCaptureProperty(Emgu.CV.CvEnum.CapProp.FrameHeight, 720 );
+            //_capture.SetCaptureProperty(Emgu.CV.CvEnum.CapProp.FrameWidth, 1280);
 
             Image<Bgr, Byte> image = _capture.QueryFrame().ToImage<Bgr, Byte>();
 
-            //image.ToBitmap().Save("filename.png");
+            image.ToBitmap().Save("filename.png");
+
 
             _capture.Dispose();
 
             return image.ToBitmap();
         }
+
     }
 }

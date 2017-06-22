@@ -52,7 +52,8 @@ namespace InteractiveMirorMinWinPc
 
             using (InputArray iaImage = image.GetInputArray())
             {
-                Debug.Print("InputArray iaImage called");
+                //Debug.Print("InputArray iaImage called");
+
 #if !(__IOS__ || NETFX_CORE)
                 if (iaImage.Kind == InputArray.Type.CudaGpuMat && CudaInvoke.HasCuda)
                 {
@@ -79,8 +80,9 @@ namespace InteractiveMirorMinWinPc
                 }
                 else
 #endif
+
                 {
-                    Debug.Print("else called");
+                    //Debug.Print("else called");
                     using (CascadeClassifier face = new CascadeClassifier(faceFileName))
                     {
                         watch = Stopwatch.StartNew();

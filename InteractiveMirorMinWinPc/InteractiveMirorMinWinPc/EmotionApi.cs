@@ -36,17 +36,30 @@ namespace InteractiveMirorMinWinPc
         {
 
             //FileStream stream3 = new FileStream("portrait.jpeg", FileMode.Open, FileAccess.Read);
-            
+
             // convert the picture to a stream
             var stream2 = new System.IO.MemoryStream();
-            image.Save(stream2, ImageFormat.Png);
-            stream2.Position = 0;
+            try
+            {
+                image.Save(stream2, ImageFormat.Png);
+                stream2.Position = 0;
+            }catch{
+                return "picture not converted into a stream";
+            }
+
 
             // ask the emotion Api
-            emotionResult = await emotionServiceClient.RecognizeAsync(stream2);
+            try{
+                emotionResult = await emotionServiceClient.RecognizeAsync(stream2);
+            }catch{
+                return "error asking emotion Api";
+            }
+
 
             // read the response
             Microsoft.ProjectOxford.Common.Contract.EmotionScores scores;
+
+
             try
             {
                 scores = emotionResult[0].Scores;
@@ -69,6 +82,8 @@ namespace InteractiveMirorMinWinPc
                     "Comtempt : " + scores.Contempt + "\n" +
                     "Disgust : " + scores.Disgust + "\n" +
                     "Neutral : " + scores.Neutral;
+
+                float[] response2 = new float[] { float.Parse(scores.Happiness.ToString()), float.Parse(scores.Sadness.ToString()) };
             }
 
             return response;  
