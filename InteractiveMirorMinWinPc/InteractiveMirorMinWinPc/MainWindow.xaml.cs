@@ -81,6 +81,7 @@ namespace InteractiveMirorMinWinPc
                     float[] response = await Task.Run(() => emotionApi.MakeRequestBitmap2(image));
 
                     if(response.Length > 1){
+                        /*
                         textBlockEmotionApi.Text =
                             "Happiness : " + response[0].ToString() + "\n" +
                             "Sadness : " + response[1].ToString() + "\n" +
@@ -90,6 +91,7 @@ namespace InteractiveMirorMinWinPc
                             "Comtempt : " + response[5].ToString() + "\n" +
                             "Disgust : " + response[6].ToString() + "\n" +
                             "Neutral : " + response[7].ToString();
+                            */
 
                         happiness.Width = response[0] * 100;
                         sadness.Width = response[1] * 100;
@@ -111,6 +113,68 @@ namespace InteractiveMirorMinWinPc
                 }
 
                 textBlockEmotionApi.Text += "\n iteration number " + count.ToString();
+            }
+
+        }
+
+        private async void button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Drawing.Image image1 = null;
+            System.Drawing.Image image2 = null;
+            //System.Drawing.Image image3 = null;
+            bool aFaceIsDetected = false;
+
+            while (true)
+            {
+                count++;
+
+                List<Task> tasks = new List<Task>();
+
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    // take a photo
+                    image1 = webcam.TakePicture();
+                }));
+
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    // look for a face in the photo
+                    if(image2 != null){
+                        aFaceIsDetected = faceDetection.DetectFace(image2);
+                    }
+                }));
+
+                await Task.WhenAll(tasks);
+
+                textBlockEmotionApi.Text = "threads appelés, iteration n°" + count;
+
+
+                if (aFaceIsDetected)
+                {
+                    textBlockEmotionApi.Text += " - face detected";
+
+                    await Task.Factory.StartNew(async () =>
+                    {
+                        float[] response = await emotionApi.MakeRequestBitmap2(image);
+                        if (response.Length > 1)
+                        {
+                            happiness.Width = response[0] * 100;
+                            sadness.Width = response[1] * 100;
+                            surprise.Width = response[2] * 100;
+                            fear.Width = response[3] * 100;
+                            anger.Width = response[4] * 100;
+                            contempt.Width = response[5] * 100;
+                            disgust.Width = response[6] * 100;
+                            neutral.Width = response[7] * 100;
+                        }
+                    });
+                }
+                else
+                {
+                    textBlockEmotionApi.Text += " - no face detected";
+                }
+
+                image2 = image1;
             }
 
         }
