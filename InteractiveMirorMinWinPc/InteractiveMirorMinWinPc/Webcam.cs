@@ -26,10 +26,6 @@ namespace InteractiveMirorMinWinPc
         // for the camera capture
         private VideoCapture _capture = null;
 
-        // 2
-
-
-
         public Webcam()
         {
 

@@ -121,8 +121,10 @@ namespace InteractiveMirorMinWinPc
         {
             System.Drawing.Image image1 = null;
             System.Drawing.Image image2 = null;
-            //System.Drawing.Image image3 = null;
+            System.Drawing.Image image3 = null;
             bool aFaceIsDetected = false;
+            bool aFaceIsDetectedNextLoop = false;
+            float[] response = null;
 
             while (true)
             {
@@ -130,34 +132,60 @@ namespace InteractiveMirorMinWinPc
 
                 List<Task> tasks = new List<Task>();
 
+                // take a photo
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    // take a photo
                     image1 = webcam.TakePicture();
                 }));
 
+                // look for a face in the photo
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    // look for a face in the photo
-                    if(image2 != null){
+                    if(image2 != null)
                         aFaceIsDetected = faceDetection.DetectFace(image2);
-                    }
                 }));
+
+                // ask microsoft emotion Api                
+                tasks.Add(Task.Factory.StartNew(async () =>
+                {
+                    if (aFaceIsDetected && image3 != null)
+                    {
+                        response = await emotionApi.MakeRequestBitmap2(image3);                       
+                    }                    
+                }));
+
+                /*
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    Thread.Sleep(3000);
+                }));
+                */
 
                 await Task.WhenAll(tasks);
 
-                textBlockEmotionApi.Text = "threads appelés, iteration n°" + count;
+                textBlockEmotionApi.Text = "- iteration n°" + count + "\n- threads appelés\n";
 
-
-                if (aFaceIsDetected)
+                if (!aFaceIsDetectedNextLoop)
+                    textBlockEmotionApi.Text += "- no face detected\n";
+                else
                 {
-                    textBlockEmotionApi.Text += " - face detected";
-
-                    await Task.Factory.StartNew(async () =>
+                    textBlockEmotionApi.Text += "- a face is detected\n";
+                    if (response != null)
                     {
-                        float[] response = await emotionApi.MakeRequestBitmap2(image);
                         if (response.Length > 1)
                         {
+                            textBlockEmotionApi.Text +=
+                                "\n\n\n" +
+                                "Happiness : " + response[0].ToString() + "\n" +
+                                "Sadness : " + response[1].ToString() + "\n" +
+                                "Surprise : " + response[2].ToString() + "\n" +
+                                "Fear : " + response[3].ToString() + "\n" +
+                                "Anger : " + response[4].ToString() + "\n" +
+                                "Comtempt : " + response[5].ToString() + "\n" +
+                                "Disgust : " + response[6].ToString() + "\n" +
+                                "Neutral : " + response[7].ToString();
+
+                            // visual datas on the screen
                             happiness.Width = response[0] * 100;
                             sadness.Width = response[1] * 100;
                             surprise.Width = response[2] * 100;
@@ -167,14 +195,17 @@ namespace InteractiveMirorMinWinPc
                             disgust.Width = response[6] * 100;
                             neutral.Width = response[7] * 100;
                         }
-                    });
-                }
-                else
-                {
-                    textBlockEmotionApi.Text += " - no face detected";
+                        else
+                        {
+                            textBlockEmotionApi.Text += "- ERROR n°" + response[0];
+                        }
+                    }
                 }
 
+                image3 = image2;
                 image2 = image1;
+
+                aFaceIsDetectedNextLoop = aFaceIsDetected;
             }
 
         }

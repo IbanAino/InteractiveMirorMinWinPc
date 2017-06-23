@@ -30,7 +30,7 @@ namespace InteractiveMirorMinWinPc
         // METHODS
         public bool DetectFace(Image image2)
         {
-            image2.Save("filename.png");
+            //image2.Save("filename.png");
 
             bool functionResponse = false;
             long detectionTime;
