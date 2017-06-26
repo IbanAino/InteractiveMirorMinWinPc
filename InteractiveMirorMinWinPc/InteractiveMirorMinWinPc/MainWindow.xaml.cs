@@ -120,7 +120,7 @@ namespace InteractiveMirorMinWinPc
         private async void button_Click(object sender, RoutedEventArgs e)
         {
             System.Drawing.Image image1 = null;
-            System.Drawing.Image image2 = null;
+            //System.Drawing.Image image2 = null;
             System.Drawing.Image image3 = null;
             bool aFaceIsDetected = false;
             bool aFaceIsDetectedNextLoop = false;
@@ -135,15 +135,22 @@ namespace InteractiveMirorMinWinPc
                 // take a photo
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
+                    // take a photo
                     image1 = webcam.TakePicture();
+
+                    // look for a face in the photo
+                    if (image1 != null)
+                        aFaceIsDetected = faceDetection.DetectFace(image1);
                 }));
 
+                /*
                 // look for a face in the photo
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
                     if(image2 != null)
                         aFaceIsDetected = faceDetection.DetectFace(image2);
                 }));
+                */
 
                 // ask microsoft emotion Api                
                 tasks.Add(Task.Factory.StartNew(async () =>
@@ -202,8 +209,10 @@ namespace InteractiveMirorMinWinPc
                     }
                 }
 
-                image3 = image2;
-                image2 = image1;
+                //image3 = image2;
+                //image2 = image1;
+
+                image3 = image1;
 
                 aFaceIsDetectedNextLoop = aFaceIsDetected;
             }
