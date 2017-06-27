@@ -30,11 +30,21 @@ namespace InteractiveMirorMinWinPc
         // ATTRIBUTS
 
         int count = 0;
+        int refresfScrennDatasCount;
+
+        bool refreshScreenDatas = false;
 
         System.Drawing.Image image;
 
+        float[] emotions = new float[8];
+        float[] oldEmotions = new float[8];
+        float[] displayedEmotions = new float[8];
+
         // DispatcherTimer setup
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+
+        // dispatcher timer to refresh the screen datas
+        System.Timers.Timer dispatcherTimer2 = new System.Timers.Timer();
 
         // instanciations of classes
         Webcam webcam = new Webcam();
@@ -50,6 +60,12 @@ namespace InteractiveMirorMinWinPc
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+
+            // refresh the screen datas 24 per seconds
+            dispatcherTimer2.Elapsed += OnTimedEvent;
+            dispatcherTimer2.Interval = 41;
+            dispatcherTimer2.AutoReset = true;
+            dispatcherTimer2.Enabled = true;
         }
 
         // DISPLAY THE TIME AND THE DATE
@@ -61,61 +77,39 @@ namespace InteractiveMirorMinWinPc
             CommandManager.InvalidateRequerySuggested();
         }
 
-        // DISPLAY BUTTON STATE
 
-        private async void button2_Click(object sender, RoutedEventArgs e)
+        // REFRESH SCREEN DATAS
+
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            while (true)
+            refresfScrennDatasCount++;
+        }
+
+        
+        private void RefreshScreenDatas(float[] emotions)
+        {
+
+            for(int i = 0; i<8; i++)
             {
-                count++;
-                
-                // take a photo
-                Task<System.Drawing.Image> task1 = Task.Run(new Func<System.Drawing.Image>(webcam.TakePicture));
-                image = task1.Result;
-
-                // look for a face in the photo
-                bool aFaceIsDetected = await Task.Run(() => faceDetection.DetectFace(image));
-
-                if (aFaceIsDetected)
-                {
-                    float[] response = await Task.Run(() => emotionApi.MakeRequestBitmap2(image));
-
-                    if(response.Length > 1){
-                        /*
-                        textBlockEmotionApi.Text =
-                            "Happiness : " + response[0].ToString() + "\n" +
-                            "Sadness : " + response[1].ToString() + "\n" +
-                            "Surprise : " + response[2].ToString() + "\n" +
-                            "Fear : " + response[3].ToString() + "\n" +
-                            "Anger : " + response[4].ToString() + "\n" +
-                            "Comtempt : " + response[5].ToString() + "\n" +
-                            "Disgust : " + response[6].ToString() + "\n" +
-                            "Neutral : " + response[7].ToString();
-                            */
-
-                        happiness.Width = response[0] * 100;
-                        sadness.Width = response[1] * 100;
-                        surprise.Width = response[2] * 100;
-                        fear.Width = response[3] * 100;
-                        anger.Width = response[4] * 100;
-                        contempt.Width = response[5] * 100;
-                        disgust.Width = response[6] * 100;
-                        neutral.Width = response[7] * 100;
-                    }
-                    else
-                    {
-                        textBlockEmotionApi.Text = "ERROR n°" + response[0];
-                    }
-                }
-                else
-                {
-                    textBlockEmotionApi.Text = "no face detected by OpenCV";
-                }
-
-                textBlockEmotionApi.Text += "\n iteration number " + count.ToString();
+                displayedEmotions[i] = emotions[i];
             }
 
+            displayDatas(displayedEmotions);
         }
+        
+
+        private void displayDatas(float[] response)
+        {
+            happiness.Width = response[0] * 100;
+            sadness.Width = response[1] * 100;
+            surprise.Width = response[2] * 100;
+            fear.Width = response[3] * 100;
+            anger.Width = response[4] * 100;
+            contempt.Width = response[5] * 100;
+            disgust.Width = response[6] * 100;
+            neutral.Width = response[7] * 100;
+        }
+
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
@@ -143,15 +137,6 @@ namespace InteractiveMirorMinWinPc
                         aFaceIsDetected = faceDetection.DetectFace(image1);
                 }));
 
-                /*
-                // look for a face in the photo
-                tasks.Add(Task.Factory.StartNew(() =>
-                {
-                    if(image2 != null)
-                        aFaceIsDetected = faceDetection.DetectFace(image2);
-                }));
-                */
-
                 // ask microsoft emotion Api                
                 tasks.Add(Task.Factory.StartNew(async () =>
                 {
@@ -160,13 +145,6 @@ namespace InteractiveMirorMinWinPc
                         response = await emotionApi.MakeRequestBitmap2(image3);                       
                     }                    
                 }));
-
-                /*
-                tasks.Add(Task.Factory.StartNew(() =>
-                {
-                    Thread.Sleep(3000);
-                }));
-                */
 
                 await Task.WhenAll(tasks);
 
@@ -192,15 +170,12 @@ namespace InteractiveMirorMinWinPc
                                 "Disgust : " + response[6].ToString() + "\n" +
                                 "Neutral : " + response[7].ToString();
 
-                            // visual datas on the screen
-                            happiness.Width = response[0] * 100;
-                            sadness.Width = response[1] * 100;
-                            surprise.Width = response[2] * 100;
-                            fear.Width = response[3] * 100;
-                            anger.Width = response[4] * 100;
-                            contempt.Width = response[5] * 100;
-                            disgust.Width = response[6] * 100;
-                            neutral.Width = response[7] * 100;
+                            for (int i = 0; i < 8; i++)
+                            {
+                                emotions[i] = response[i];
+                            }
+                            refresfScrennDatasCount = 0;
+                            RefreshScreenDatas(response);
                         }
                         else
                         {
@@ -208,9 +183,6 @@ namespace InteractiveMirorMinWinPc
                         }
                     }
                 }
-
-                //image3 = image2;
-                //image2 = image1;
 
                 image3 = image1;
 
