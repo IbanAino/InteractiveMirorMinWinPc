@@ -88,20 +88,14 @@ namespace InteractiveMirorMinWinPc
             if (refreshScreenDatas)
             {
                 if (refresfScrennDatasCount < 14)
-                {
-
-                    
+                {                    
                     for (int i = 0; i < 8; i++)
                     {
                         displayedEmotions[i] = oldEmotions[i] + (emotions[i] - oldEmotions[i]) * refresfScrennDatasCount * 0.0714f;
-                        //displayedEmotions[i] = emotions[i] * refresfScrennDatasCount / 100;
+
                         if (displayedEmotions[i] < 0)
                             displayedEmotions[i] = 0;
-                    }
-                    
-
-                    //displayedEmotions[0] = oldEmotions[0] + (emotions[0] - oldEmotions[0]) * refresfScrennDatasCount * 0.8f;
-                    //displayedEmotions[0] = emotions[0] * refresfScrennDatasCount * 0.7f;
+                    }                    
 
                     displayDatas(displayedEmotions);
 
@@ -125,16 +119,6 @@ namespace InteractiveMirorMinWinPc
 
         private void displayDatas(float[] response)
         {
-            /*
-            happiness.Width = response[0] * 100;
-            sadness.Width = response[1] * 100;
-            surprise.Width = response[2] * 100;
-            fear.Width = response[3] * 100;
-            anger.Width = response[4] * 100;
-            contempt.Width = response[5] * 100;
-            disgust.Width = response[6] * 100;
-            neutral.Width = response[7] * 100;
-            */
             happiness.Width = response[0];
             sadness.Width = response[1];
             surprise.Width = response[2];
@@ -145,11 +129,9 @@ namespace InteractiveMirorMinWinPc
             neutral.Width = response[7];
         }
 
-
         private async void button_Click(object sender, RoutedEventArgs e)
         {
             System.Drawing.Image image1 = null;
-            //System.Drawing.Image image2 = null;
             System.Drawing.Image image3 = null;
             bool aFaceIsDetected = false;
             bool aFaceIsDetectedNextLoop = false;
@@ -205,12 +187,6 @@ namespace InteractiveMirorMinWinPc
                                 "Disgust : " + response[6].ToString() + "\n" +
                                 "Neutral : " + response[7].ToString();
 
-                            /*
-                            for (int i = 0; i < 8; i++)
-                            {
-                                oldEmotions[i] = emotions[i];
-                            }
-                            */
                             for (int i = 0; i < 8; i++)
                             {
                                 emotions[i] = response[i] * 100;
@@ -221,7 +197,6 @@ namespace InteractiveMirorMinWinPc
                                 refresfScrennDatasCount = 0;
                                 refreshScreenDatas = true;
                             }
-
                         }
                         else
                         {
@@ -234,7 +209,6 @@ namespace InteractiveMirorMinWinPc
 
                 aFaceIsDetectedNextLoop = aFaceIsDetected;
             }
-
         }
     } 
 }
