@@ -26,6 +26,7 @@
         <Rectangle x:Name="disgust" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="825,257,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Rectangle x:Name="neutral" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="825,272,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Button x:Name="button" Content="Bouton pour lancer l'analyse d'émotions" HorizontalAlignment="Left" Margin="761,518,0,0" VerticalAlignment="Top" Width="239" Click="button_Click"/>
+        <TextBlock x:Name="countDisplayed" HorizontalAlignment="Left" Margin="888,111,0,0" TextWrapping="Wrap" Text="count" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

@@ -30,11 +30,11 @@ namespace InteractiveMirorMinWinPc
         // ATTRIBUTS
 
         int count = 0;
-        int refresfScrennDatasCount;
+        float refresfScrennDatasCount;
 
         bool refreshScreenDatas = false;
 
-        System.Drawing.Image image;
+        //System.Drawing.Image image;
 
         float[] emotions = new float[8];
         float[] oldEmotions = new float[8];
@@ -42,6 +42,8 @@ namespace InteractiveMirorMinWinPc
 
         // DispatcherTimer setup
         DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+
+        DispatcherTimer dispatcherTimer3 = new System.Windows.Threading.DispatcherTimer();
 
         // dispatcher timer to refresh the screen datas
         System.Timers.Timer dispatcherTimer2 = new System.Timers.Timer();
@@ -61,11 +63,10 @@ namespace InteractiveMirorMinWinPc
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
 
-            // refresh the screen datas 24 per seconds
-            dispatcherTimer2.Elapsed += OnTimedEvent;
-            dispatcherTimer2.Interval = 41;
-            dispatcherTimer2.AutoReset = true;
-            dispatcherTimer2.Enabled = true;
+            // refresh the data screen 24 time per second
+            dispatcherTimer3.Tick += new EventHandler(dispatcherTimer_Tick2);
+            dispatcherTimer3.Interval = new TimeSpan(0, 0, 0, 0, 42);
+            dispatcherTimer3.Start();
         }
 
         // DISPLAY THE TIME AND THE DATE
@@ -80,26 +81,51 @@ namespace InteractiveMirorMinWinPc
 
         // REFRESH SCREEN DATAS
 
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        private void dispatcherTimer_Tick2(object sender, EventArgs e)
         {
             refresfScrennDatasCount++;
-        }
 
-        
-        private void RefreshScreenDatas(float[] emotions)
-        {
-
-            for(int i = 0; i<8; i++)
+            if (refreshScreenDatas)
             {
-                displayedEmotions[i] = emotions[i];
-            }
+                if (refresfScrennDatasCount < 14)
+                {
 
-            displayDatas(displayedEmotions);
+                    
+                    for (int i = 0; i < 8; i++)
+                    {
+                        displayedEmotions[i] = oldEmotions[i] + (emotions[i] - oldEmotions[i]) * refresfScrennDatasCount * 0.0714f;
+                        //displayedEmotions[i] = emotions[i] * refresfScrennDatasCount / 100;
+                        if (displayedEmotions[i] < 0)
+                            displayedEmotions[i] = 0;
+                    }
+                    
+
+                    //displayedEmotions[0] = oldEmotions[0] + (emotions[0] - oldEmotions[0]) * refresfScrennDatasCount * 0.8f;
+                    //displayedEmotions[0] = emotions[0] * refresfScrennDatasCount * 0.7f;
+
+                    displayDatas(displayedEmotions);
+
+                    refresfScrennDatasCount++;
+                    countDisplayed.Text = refresfScrennDatasCount.ToString() + "\n new : " + emotions[0] + "\n old : " + oldEmotions[0] + "\n dis : " + displayedEmotions[0] ;
+                }
+                
+                else
+                {
+                    refresfScrennDatasCount = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        oldEmotions[i] = emotions[i];
+                        //displayedEmotions[i] = 0;
+                    }
+                    refreshScreenDatas = false;
+                    countDisplayed.Text = "finit";
+                }
+            }            
         }
-        
 
         private void displayDatas(float[] response)
         {
+            /*
             happiness.Width = response[0] * 100;
             sadness.Width = response[1] * 100;
             surprise.Width = response[2] * 100;
@@ -108,6 +134,15 @@ namespace InteractiveMirorMinWinPc
             contempt.Width = response[5] * 100;
             disgust.Width = response[6] * 100;
             neutral.Width = response[7] * 100;
+            */
+            happiness.Width = response[0];
+            sadness.Width = response[1];
+            surprise.Width = response[2];
+            fear.Width = response[3];
+            anger.Width = response[4];
+            contempt.Width = response[5];
+            disgust.Width = response[6];
+            neutral.Width = response[7];
         }
 
 
@@ -170,12 +205,23 @@ namespace InteractiveMirorMinWinPc
                                 "Disgust : " + response[6].ToString() + "\n" +
                                 "Neutral : " + response[7].ToString();
 
+                            /*
                             for (int i = 0; i < 8; i++)
                             {
-                                emotions[i] = response[i];
+                                oldEmotions[i] = emotions[i];
                             }
-                            refresfScrennDatasCount = 0;
-                            RefreshScreenDatas(response);
+                            */
+                            for (int i = 0; i < 8; i++)
+                            {
+                                emotions[i] = response[i] * 100;
+                            }
+
+                            if (!refreshScreenDatas)
+                            {
+                                refresfScrennDatasCount = 0;
+                                refreshScreenDatas = true;
+                            }
+
                         }
                         else
                         {
