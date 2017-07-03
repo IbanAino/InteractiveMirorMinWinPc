@@ -52,6 +52,7 @@ namespace InteractiveMirorMinWinPc
         Webcam webcam = new Webcam();
         EmotionApi emotionApi = new EmotionApi();
         FacesDetection faceDetection = new FacesDetection();
+        WeatherApi weatherApi = new WeatherApi();
 
         // CONSTRUCTOR
         public MainWindow()
@@ -208,6 +209,20 @@ namespace InteractiveMirorMinWinPc
                 image3 = image1;
 
                 aFaceIsDetectedNextLoop = aFaceIsDetected;
+            }
+        }
+
+        // button to ask the weather
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                String response = weatherApi.checkWeather(3034473);
+                weatherTextBlock.Text = response;
+            }
+            catch
+            {
+                weatherTextBlock.Text = "Weather Api ERROR";
             }
         }
     } 

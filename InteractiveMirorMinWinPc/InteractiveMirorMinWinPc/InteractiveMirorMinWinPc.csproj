@@ -89,6 +89,7 @@
     </ApplicationDefinition>
     <Compile Include="EmotionApi.cs" />
     <Compile Include="FacesDetection.cs" />
+    <Compile Include="WeatherApi.cs" />
     <Compile Include="Webcam.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
