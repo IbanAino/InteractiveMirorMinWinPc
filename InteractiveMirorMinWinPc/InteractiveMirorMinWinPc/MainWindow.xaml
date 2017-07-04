@@ -9,9 +9,9 @@
     <Grid Background="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
         <Rectangle Fill="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" HorizontalAlignment="Left" Height="113" Margin="929,447,0,0" Stroke="Black" VerticalAlignment="Top" Width="302" StrokeThickness="2"/>
         <TextBlock x:Name="textBlockEmotionApi" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="En attente d'informations" VerticalAlignment="Top" Height="264" Width="309" Foreground="Lime"/>
-        <TextBlock x:Name="textBlockTime" HorizontalAlignment="Left" Margin="905,23,0,0" TextWrapping="Wrap" Text="00h00" VerticalAlignment="Top" FontFamily="Global Monospace" FontSize="36" Foreground="White" Width="326" Height="151"/>
+        <TextBlock x:Name="textBlockTime" HorizontalAlignment="Left" Margin="905,23,0,0" TextWrapping="Wrap" Text="00h00" VerticalAlignment="Top" FontSize="36" Foreground="White" Width="326" Height="151"/>
 
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="67,363,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="271" Width="172" FontFamily="Global Monospace" FontSize="28" Foreground="White"><Run Text="Joie"/><LineBreak/><Run Text="Tristesse"/><LineBreak/><Run Text="Surprise"/><LineBreak/><Run Text="Crainte"/><LineBreak/><Run Text="Col"/><Run Text="è"/><Run Text="re"/><LineBreak/><Run Text="Mépris"/><LineBreak/><Run Text="Dégoût"/><LineBreak/><Run Text="Neutrlité"/><LineBreak/><Run/></TextBlock>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="116,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="302" Width="118" FontSize="26" Foreground="White"><Run Text="Joie"/><LineBreak/><Run Text="Tristesse"/><LineBreak/><Run Text="Surprise"/><LineBreak/><Run Text="Crainte"/><LineBreak/><Run Text="Col"/><Run Text="è"/><Run Text="re"/><LineBreak/><Run Text="Mépris"/><LineBreak/><Run Text="Dégoût"/><LineBreak/><Run Text="Neutrlité"/><LineBreak/><Run/></TextBlock>
         <Rectangle x:Name="happiness" Fill="#FFF9EE00" HorizontalAlignment="Left" Height="20" Margin="239,365,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Rectangle x:Name="sadness" Fill="#FF5B054B" HorizontalAlignment="Left" Height="20" Margin="239,400,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Rectangle x:Name="surprise" Fill="#FFF3A547" HorizontalAlignment="Left" Height="20" Margin="239,435,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
@@ -21,9 +21,9 @@
         <Rectangle x:Name="disgust" Fill="#FF9B5605" HorizontalAlignment="Left" Height="20" Margin="239,575,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Rectangle x:Name="neutral" Fill="#FF7C7C7C" HorizontalAlignment="Left" Height="20" Margin="239,610,0,0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" Width="100"/>
         <Button x:Name="button" Content="Bouton pour lancer l'analyse d'émotions" HorizontalAlignment="Left" Margin="962,475,0,0" VerticalAlignment="Top" Width="239" Click="button_Click"/>
-        <TextBlock x:Name="countDisplayed" HorizontalAlignment="Left" Margin="509,23,0,0" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Foreground="Lime"/>
+        <TextBlock x:Name="countDisplayed" HorizontalAlignment="Left" Margin="934,575,0,0" TextWrapping="Wrap" Text="count" VerticalAlignment="Top" Foreground="Lime"/>
         <Button x:Name="button1" Content="Check the weather" HorizontalAlignment="Left" Margin="962,510,0,0" VerticalAlignment="Top" Width="239" Click="button1_Click"/>
-        <TextBlock x:Name="weatherTextBlock" HorizontalAlignment="Left" Margin="509,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="543" Width="420" Foreground="Lime"><Run Text="Weater : w"/><Run Text="a"/><Run Text="inting "/><Run Text="datas"/></TextBlock>
+        <TextBlock x:Name="weatherTextBlock" HorizontalAlignment="Left" Margin="379,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="669" Width="550" Foreground="Lime"><Run Text="Weater : w"/><Run Text="a"/><Run Text="inting "/><Run Text="datas"/></TextBlock>
 
     </Grid>
 </Window>

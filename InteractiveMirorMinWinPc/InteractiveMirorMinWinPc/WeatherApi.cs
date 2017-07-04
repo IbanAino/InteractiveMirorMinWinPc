@@ -22,7 +22,7 @@ namespace InteractiveMirorMinWinPc
         // METHODS
         public string checkWeather (int cityId)
         {
-            JObject jsonData = JObject.Parse(new System.Net.WebClient().DownloadString(string.Format("http://api.openweathermap.org/data/2.5/weather?appid={0}&q={1}", weatherApiKey, "id=3034473")));
+            JObject jsonData = JObject.Parse(new System.Net.WebClient().DownloadString(string.Format("http://api.openweathermap.org/data/2.5/weather?id={0}&appid={1}", 3034475, weatherApiKey)));
 
             return jsonData.ToString();
         }
